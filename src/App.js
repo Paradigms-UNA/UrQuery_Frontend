@@ -2,6 +2,10 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 import { Navbar } from './components/Navbar';
+import { EditingArea } from './components/EditingArea';
+import { useState, useEffect } from 'react';
+import compileService from './service/compileService.mjs';
+import { ResultArea } from './components/ResultArea';
 
 /**
  * TODO Components to program:
@@ -19,14 +23,40 @@ import { Navbar } from './components/Navbar';
  */
 
 const App = () => {
+
+  const [code, setCode] = useState(null);
+  const [compiling, setCompiling] = useState(false);
+  const [xml, setXml] = useState('');
+  const [result, setResult] = useState(null);
+
+  const onEditorsChange = (target, value) => {
+    target === 'EA' ? setCode(value) : setXml(value);
+  }
+
+  const handleCompile = () => {
+    setCompiling(true);
+    // TODO: Perform axios call & set result
+    compileService.compile(code)
+      .then(response => {
+        setResult(response);
+        setCompiling(false);
+      })
+      .catch(err => {
+        setCompiling(false);
+        alert(err);
+      });
+  }
+
   return (
     <div className='container-fluid'>
       <Navbar />
       <div className='row'>
-        <div className='col lside'>
-          <h1>Hello from react!!</h1>
+        <div className='col lside d-flex flex-column align-items-center'>
+          <EditingArea onChange={onEditorsChange} code={code} />
+          <button className='btn btn-success' onClick={handleCompile}>{compiling ? 'Compiling...' : 'Compile'}</button>
         </div>
         <div className='col rside'>
+          <ResultArea res={result}></ResultArea>
         </div>
       </div>
     </div>
