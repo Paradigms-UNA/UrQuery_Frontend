@@ -27,25 +27,27 @@ const App = () => {
   const [code, setCode] = useState(null);
   const [compiling, setCompiling] = useState(false);
   const [xml, setXml] = useState('');
-  const [result, setResult] = useState(null);
+  const [result, setResult] = useState('');
 
   const onEditorsChange = (target, value) => {
-    target === 'EA' ? setCode(value) : setXml(value);
+   target === 'EA' ? setCode(value) : setXml(value);
   }
 
-  const handleCompile = () => {
-    setCompiling(true);
-    // TODO: Perform axios call & set result
-    compileService.compile(code)
-      .then(response => {
-        setResult(response);
-        setCompiling(false);
-      })
-      .catch(err => {
-        setCompiling(false);
-        alert(err);
-      });
-  }
+
+  useEffect(() => {
+    //Validate is compiling
+
+    // Validate there's something in DA - Sprint 2
+
+    // Validate if the script is compiled - Sprint 2
+
+
+    //Change this once the SpringBoot Server is done
+    compiling ? setTimeout(() => setResult(compileService.compile(code)), setCompiling(false), 3000) : setResult('');
+    
+    
+  }, [compiling])
+  
 
   return (
     <div className='container-fluid'>
@@ -53,7 +55,7 @@ const App = () => {
       <div className='row'>
         <div className='col lside d-flex flex-column align-items-center'>
           <EditingArea onChange={onEditorsChange} code={code} />
-          <button className='btn btn-success' onClick={handleCompile}>{compiling ? 'Compiling...' : 'Compile'}</button>
+          <button className='btn btn-success' onClick={ () => setCompiling(true)}>{compiling ? 'Compiling...' : 'Compile'}</button>
         </div>
         <div className='col rside'>
           <ResultArea res={result}></ResultArea>
