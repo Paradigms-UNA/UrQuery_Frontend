@@ -3,12 +3,14 @@ import { Button } from 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 import React from 'react'
+import { useState } from 'react';
 
 const componentName='LA';
 
-export const LoadArea = ({onChange,code}) => {
 
-    //const [script, setScript] = useState(code || '');
+export const DocumentArea = ({onChange, documentXml}) => {
+
+    const [xml, setXml] = useState(documentXml || '');
 
     const handleLoadChange = (value) => {
         onChange(componentName, value);
@@ -23,6 +25,7 @@ export const LoadArea = ({onChange,code}) => {
          language='xml'
         theme='vs-dark'
         onChange={handleLoadChange}
+        value={xml}
         />
     </div>
     )

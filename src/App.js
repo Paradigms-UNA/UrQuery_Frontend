@@ -3,10 +3,10 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 
 import { Navbar } from './components/Navbar';
 import { EditingArea } from './components/EditingArea';
-import { LoadArea } from './components/LoadArea';
+import { DocumentArea } from './components/DocumentArea';
 import { useState, useEffect } from 'react';
 import compileService from './service/compileService.mjs';
-import loadService from './service/loadService.mjs';
+import documentService from './service/documentService.mjs';
 import { ResultArea } from './components/ResultArea';
 
 /**
@@ -29,15 +29,11 @@ const App = () => {
   const [code, setCode] = useState(null);
   const [compiling, setCompiling] = useState(false);
   const [xml, setXml] = useState('');
-  const [load, setLoad] = useState(false)
+  const [loading, setLoading] = useState(false)
   const [result, setResult] = useState('');
 
   const onEditorsChange = (target, value) => {
    target === 'EA' ? setCode(value) : setXml(value);
-  }
-
-  const onLoadChange = (target, value) => {
-    target === 'LA' ? setCode(value) : setXml(value);
   }
 
 
@@ -56,10 +52,18 @@ const App = () => {
   }, [compiling])
 
   useEffect(() =>{
-    load ? setTimeout(() => setCode(loadService.loading(code)), setLoad(false), 3000) : setResult('');
 
+    if(loading)
+    {
+      setXml(documentService.loading(xml))
+      setLoading(false)
+      console.log(xml)
+    }
+    
+    //loading ? setTimeout(() => {setXml(documentService.loading(xml)); setLoading(false);}, 3000) : setResult('');
 
-  }, [xml])
+    //console.log(xml)
+  }, [loading])
   
 
   return (
@@ -69,8 +73,8 @@ const App = () => {
         <div className='col lside'>
 
          <div> 
-          <LoadArea onChange={onLoadChange} code={code} />
-          <button className='btn btn-success' onClick={ () => setLoad(true)}>{load ? 'en desarrollo' : 'Load'}</button>
+          <DocumentArea onChange={onEditorsChange} code={code} />
+          <button className='btn btn-success' onClick={ () => setLoading(true)}>{loading ? 'en desarrollo' : 'Load'}</button>
           </div>
 
           <div> 
