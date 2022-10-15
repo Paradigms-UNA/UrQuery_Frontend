@@ -3,8 +3,10 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 
 import { Navbar } from './components/Navbar';
 import { EditingArea } from './components/EditingArea';
+import { LoadArea } from './components/LoadArea';
 import { useState, useEffect } from 'react';
 import compileService from './service/compileService.mjs';
+import loadService from './service/loadService.mjs';
 import { ResultArea } from './components/ResultArea';
 
 /**
@@ -27,10 +29,15 @@ const App = () => {
   const [code, setCode] = useState(null);
   const [compiling, setCompiling] = useState(false);
   const [xml, setXml] = useState('');
+  const [load, setLoad] = useState(false)
   const [result, setResult] = useState('');
 
   const onEditorsChange = (target, value) => {
    target === 'EA' ? setCode(value) : setXml(value);
+  }
+
+  const onLoadChange = (target, value) => {
+    target === 'LA' ? setCode(value) : setXml(value);
   }
 
 
@@ -47,15 +54,30 @@ const App = () => {
     
     
   }, [compiling])
+
+  useEffect(() =>{
+    load ? setTimeout(() => setCode(loadService.loading(code)), setLoad(false), 3000) : setResult('');
+
+
+  }, [xml])
   
 
   return (
     <div className='container-fluid'>
-      <Navbar />
+      <Navbar/>
       <div className='row'>
-        <div className='col lside d-flex flex-column align-items-center'>
+        <div className='col lside'>
+
+         <div> 
+          <LoadArea onChange={onLoadChange} code={code} />
+          <button className='btn btn-success' onClick={ () => setLoad(true)}>{load ? 'en desarrollo' : 'Load'}</button>
+          </div>
+
+          <div> 
           <EditingArea onChange={onEditorsChange} code={code} />
           <button className='btn btn-success' onClick={ () => setCompiling(true)}>{compiling ? 'Compiling...' : 'Compile'}</button>
+          </div>
+
         </div>
         <div className='col rside'>
           <ResultArea res={result}></ResultArea>
