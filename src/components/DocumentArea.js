@@ -10,8 +10,6 @@ const componentName='LA';
 
 export const DocumentArea = ({onChange, documentXml}) => {
 
-    const [xml, setXml] = useState(documentXml || '');
-
     const handleLoadChange = (value) => {
         onChange(componentName, value);
     };
@@ -25,7 +23,7 @@ export const DocumentArea = ({onChange, documentXml}) => {
          language='xml'
         theme='vs-dark'
         onChange={handleLoadChange}
-        value={xml}
+        value={documentXml}
         />
     </div>
     )

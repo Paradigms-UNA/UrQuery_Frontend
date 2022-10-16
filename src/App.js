@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import { Navbar } from './components/Navbar';
 import { EditingArea } from './components/EditingArea';
 import { DocumentArea } from './components/DocumentArea';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useLayoutEffect } from 'react';
 import compileService from './service/compileService.mjs';
 import documentService from './service/documentService.mjs';
 import { ResultArea } from './components/ResultArea';
@@ -33,6 +33,7 @@ const App = () => {
   const [result, setResult] = useState('');
 
   const onEditorsChange = (target, value) => {
+    console.log(value);
    target === 'EA' ? setCode(value) : setXml(value);
   }
 
@@ -51,15 +52,13 @@ const App = () => {
     
   }, [compiling])
 
-  useEffect(() =>{
+  useLayoutEffect(() =>{
 
-    if(loading)
-    {
-      setXml(documentService.loading(xml))
-      setLoading(false)
-      console.log(xml)
+    if(loading) {
+      setXml(prevXml => documentService.loading(prevXml));
+      setLoading(false);
+      console.log(xml);
     }
-    
     //loading ? setTimeout(() => {setXml(documentService.loading(xml)); setLoading(false);}, 3000) : setResult('');
 
     //console.log(xml)
@@ -73,7 +72,7 @@ const App = () => {
         <div className='col lside'>
 
          <div> 
-          <DocumentArea onChange={onEditorsChange} code={code} />
+          <DocumentArea onChange={onEditorsChange} documentXml={xml} />
           <button className='btn btn-success' onClick={ () => setLoading(true)}>{loading ? 'en desarrollo' : 'Load'}</button>
           </div>
 
