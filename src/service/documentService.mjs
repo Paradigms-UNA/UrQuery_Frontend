@@ -1,7 +1,7 @@
-//import httpCommon from "./httpCommon.mjs";
+import httpCommon from "./httpCommon.mjs";
 
-//const compile = (data) => httpCommon.post('/compile', data);
+const loading = (id) => httpCommon.get(`document/${id}`);
 
-const loading =  (data) =>  `${Date.now()}${data}`
+// const loading =  (data) =>  `${Date.now()}${data}`
 
 export default { loading };

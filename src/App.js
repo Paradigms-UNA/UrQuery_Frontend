@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import { Navbar } from './components/Navbar';
 import { EditingArea } from './components/EditingArea';
 import { DocumentArea } from './components/DocumentArea';
-import { useState, useEffect, useLayoutEffect } from 'react';
+import { useState, useLayoutEffect } from 'react';
 import compileService from './service/compileService.mjs';
 import documentService from './service/documentService.mjs';
 import { ResultArea } from './components/ResultArea';
@@ -33,12 +33,11 @@ const App = () => {
   const [result, setResult] = useState('');
 
   const onEditorsChange = (target, value) => {
-    console.log(value);
-   target === 'EA' ? setCode(value) : setXml(value);
+    target === 'EA' ? setCode(value) : setXml(value);
   }
 
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     //Validate is compiling
 
     // Validate there's something in DA - Sprint 2
@@ -47,43 +46,48 @@ const App = () => {
 
 
     //Change this once the SpringBoot Server is done
-    compiling ? setTimeout(() => setResult(compileService.compile(code)), setCompiling(false), 3000) : setResult('');
-    
-    
-  }, [compiling])
+    if (compiling) {
+      compileService.compile(code)
+        .then(response => setResult(response.data.data))
+        .then(setCompiling(false))
+        .catch(err => console.log(err))
+    }
+  }, [compiling, code])
 
-  useLayoutEffect(() =>{
+  useLayoutEffect(() => {
 
-    if(loading) {
-      setXml(prevXml => documentService.loading(prevXml));
-      setLoading(false);
-      console.log(xml);
+    if (loading) {
+      // TODO Change to get from an input
+      documentService.loading("1")
+        .then(response => setXml(response.data))
+        .then(setLoading(false))
+        .catch(err => console.log(err))
     }
     //loading ? setTimeout(() => {setXml(documentService.loading(xml)); setLoading(false);}, 3000) : setResult('');
 
     //console.log(xml)
   }, [loading])
-  
+
 
   return (
     <div className='container-fluid'>
-      <Navbar/>
+      <Navbar />
       <div className='row'>
         <div className='col lside'>
 
-         <div> 
-          <DocumentArea onChange={onEditorsChange} documentXml={xml} />
-          <button className='btn btn-success' onClick={ () => setLoading(true)}>{loading ? 'en desarrollo' : 'Load'}</button>
+          <div>
+            <DocumentArea onChange={onEditorsChange} documentXml={xml} />
+            <button className='btn btn-success' onClick={() => setLoading(true)}>{loading ? 'en desarrollo' : 'Load'}</button>
           </div>
 
-          <div> 
-          <EditingArea onChange={onEditorsChange} code={code} />
-          <button className='btn btn-success' onClick={ () => setCompiling(true)}>{compiling ? 'Compiling...' : 'Compile'}</button>
+          <div>
+            <EditingArea onChange={onEditorsChange} code={code} />
+            <button className='btn btn-success' onClick={() => setCompiling(true)}>{compiling ? 'Compiling...' : 'Compile'}</button>
           </div>
 
         </div>
         <div className='col rside'>
-          <ResultArea res={result}></ResultArea>
+            <ResultArea res={result}></ResultArea>
         </div>
       </div>
     </div>

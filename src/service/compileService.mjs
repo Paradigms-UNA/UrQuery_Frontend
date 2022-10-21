@@ -1,7 +1,5 @@
-// import httpCommon from "./httpCommon.mjs";
+import httpCommon from "./httpCommon.mjs";
 
-// const compile = (data) => httpCommon.post('/compile', data);
-
-const compile =  (data) =>  `${Date.now()}${data}`
+const compile = (data) => httpCommon.post('/compile', data);
 
 export default { compile };
