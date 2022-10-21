@@ -70,14 +70,14 @@ const App = () => {
 
 
   return (
-    <div className='container-fluid'>
+    <div className='container-fluid spa'>
       <Navbar />
-      <div className='row'>
+      <div className='row h-50'>
         <div className='col lside'>
 
           <div>
             <DocumentArea onChange={onEditorsChange} documentXml={xml} />
-            <button className='btn btn-success' onClick={() => setLoading(true)}>{loading ? 'en desarrollo' : 'Load'}</button>
+            <button className='btn btn-success mb-2' onClick={() => setLoading(true)}>{loading ? 'en desarrollo' : 'Load'}</button>
           </div>
 
           <div>
@@ -86,7 +86,7 @@ const App = () => {
           </div>
 
         </div>
-        <div className='col rside'>
+        <div className='col rside d-flex align-items-center'>
             <ResultArea res={result}></ResultArea>
         </div>
       </div>

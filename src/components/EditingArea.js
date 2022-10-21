@@ -1,26 +1,26 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Editor from '@monaco-editor/react'
 
 const componentName = 'EA';
 
 export const EditingArea = ({ onChange, code }) => {
 
-    const [script, setScript] = useState(code || '');
-
-
     const handleEditorChange = (value) => {
         onChange(componentName, value);
     };
 
     return (
-        <Editor
-            className='mt-5 mb-2 border border-2 rounded-3'
-            height='40vh'
-            width={`100%`}
-            language='xml'
-            value={code}
-            onChange={handleEditorChange}
-            defaultValue='// A test comment'
-        />
+        <>
+            <h4> Editing Area</h4>
+            <Editor
+                className='mt-1 mb-1 border border-2 rounded-3'
+                height='35vh'
+                width={`100%`}
+                language='xml'
+                value={code}
+                onChange={handleEditorChange}
+                defaultValue='// A test comment'
+            />
+        </>
     )
 }
