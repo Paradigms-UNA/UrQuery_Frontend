@@ -8,6 +8,9 @@ import { useState, useEffect, useLayoutEffect } from 'react';
 import compileService from './service/compileService.mjs';
 import documentService from './service/documentService.mjs';
 import { ResultArea } from './components/ResultArea';
+import aboutService from './service/aboutService.mjs';
+
+
 
 /**
  * TODO Components to program:
@@ -38,6 +41,18 @@ const App = () => {
   }
 
 
+  /*let url="http://localhost:8080/api/una/about";
+  
+        fetch(url)
+   .then(response => response.json())
+   .then(data => console.log(data))
+   .catch(error => console.log(error))*/
+
+    /* aboutService.about()
+      .then(response => console.log(response))*/
+
+
+
   useEffect(() => {
     //Validate is compiling
 
@@ -63,11 +78,33 @@ const App = () => {
 
     //console.log(xml)
   }, [loading])
+
   
+ 
 
   return (
     <div className='container-fluid'>
       <Navbar/>
+      
+
+<div class="modal fade" id="modalInfo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Information</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
       <div className='row'>
         <div className='col lside'>
          <div> 
@@ -84,10 +121,10 @@ const App = () => {
           <ResultArea res={result}></ResultArea>
         </div>
       </div>
-      <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js" integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk" crossorigin="anonymous"></script>
     </div>
+   
   );
+  
 }
 
 export default App;
