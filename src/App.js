@@ -8,6 +8,7 @@ import { useState, useEffect, useLayoutEffect } from 'react';
 import compileService from './service/compileService.mjs';
 import documentService from './service/documentService.mjs';
 import { ResultArea } from './components/ResultArea';
+import { Modal } from './components/Modal';
 import aboutService from './service/aboutService.mjs';
 
 
@@ -26,6 +27,13 @@ import aboutService from './service/aboutService.mjs';
  *    -- After EA and DA are complete
  * 
  */
+ function carga(){
+  fetch('ejemplo.json')
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .catch(error => console.log(error))
+ }
+ carga();
 
 const App = () => {
 
@@ -41,19 +49,50 @@ const App = () => {
   }
 
 
-  /*let url="http://localhost:8080/api/una/about";
+  //var responseText = "src/ejemplo.json";
+
+//var parsedJson = JSON.parse(responseText)
+
+//console.log(parsedJson)
+
+
+  //let url="src/ejemplo.json";
   
-        fetch(url)
-   .then(response => response.json())
-   .then(data => console.log(data))
-   .catch(error => console.log(error))*/
+        
 
-    /* aboutService.about()
+     /*aboutService.about()
       .then(response => console.log(response))*/
+     
 
+      //function loadJson(){
+       /* const xhttp = new XMLHttpRequest();
+
+        xhttp.open('GET', 'src/ejemplo.json', true);
+
+        xhttp.send();
+
+        xhttp.onreadystatechange = function(){
+          if(this.readyState == 4 && this.status == 200){
+            let datos = JSON.parse(this.responseText);
+            console.log(datos);
+            let res = document.querySelector('#res');
+            res.innerHTML = '';
+
+            for(let item of datos){
+              res.innerHTML += `
+              <tr>
+              <td>${item.workteam}</td>
+              <td>${item.about}</td>
+              </tr>
+              `
+            }
+          }
+        }*/
+     // }
 
 
   useEffect(() => {
+
     //Validate is compiling
 
     // Validate there's something in DA - Sprint 2
@@ -85,26 +124,7 @@ const App = () => {
   return (
     <div className='container-fluid'>
       <Navbar/>
-      
-
-<div class="modal fade" id="modalInfo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Information</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-
+      <Modal/>
       <div className='row'>
         <div className='col lside'>
          <div> 
